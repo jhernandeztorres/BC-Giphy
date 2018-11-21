@@ -1,4 +1,5 @@
 $(document).ready(function () {
+// Array of starting animals
 var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 
 
@@ -35,7 +36,7 @@ $("#add-animal").on("click", function(event) {
 });
 
 
-// ajax call
+// Function to make ajax call and append gifs to div
 function displayGifs() {
     // In this case, the "this" keyword refers to the button that was clicked
     var animal = $(this).attr("data-name");
@@ -59,18 +60,35 @@ function displayGifs() {
             // Only taking action if the photo has an appropriate rating
             if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
                 // Creating a div for the gif
-                var gifDiv = $("<div>");
+                var gifDiv = $("<div>").addClass("gifInfo");
                 
+                // Storing the result item's title
+                var title = results[i].title;
+                
+                // Creating a paragraph tag with the result item's title
+                var t = $("<p>").text("Title: " + title);
+
+                // Storing the result item's trending date
+                var trending = results[i].trending_datetime;
+
+                // Creating a paragraph tag with the result items trending date
+                var tr = $("<p>").text("Trending Date: " + trending);
+
+                // Creating an image tag
+                var animalImage = $("<img>");
+
                 // Storing the result item's rating
                 var rating = results[i].rating;
                 
                 // Creating a paragraph tag with the result item's rating
-                var p = $("<p>").text("Rating: " + rating);
-                
-                // Creating an image tag
-                var animalImage = $("<img>");
-                
-                // Giving the image tag an src attribute of a proprty pulled off the
+                var r = $("<p>").text("Rating: " + rating);
+
+                // Creating a button for download and add to favorite
+                var dB = $("<button>").addClass("btn dload").text("Download").prepend('<i class="fas fa-download"></i>');
+                var aF = $("<button>").addClass("btn fav").text("Favorite?").prepend('<i class="far fa-star"></i>');
+                // var dGif = $("<a href=" + results[i].url);
+
+                // Giving the image tag an src attribute of a property pulled off the
                 // result item
                 animalImage.attr("src", results[i].images.fixed_height_still.url)
                 .attr("data-state", "still")
@@ -78,9 +96,14 @@ function displayGifs() {
                 .attr("data-animate", results[i].images.fixed_height.url)
                 .addClass("gif");
                 
-                // Appending the paragraph and personImage we created to the "gifDiv" div we created
-                gifDiv.append(p);
+                // Appending the variables I created to the "gifDiv" div I created
+                gifDiv.append("<br>");
+                gifDiv.append(aF);
+                gifDiv.append(t);
                 gifDiv.append(animalImage);
+                gifDiv.append(tr);
+                gifDiv.append(r);
+                gifDiv.append(dB);
                 
                 // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
                 $("#gifs-show-here").prepend(gifDiv);
@@ -89,7 +112,7 @@ function displayGifs() {
     });
 };
 
-
+// Function to start and stop animations
 function animateGifs() {
     var state = $(this).attr("data-state");
     if (state === "still") {
