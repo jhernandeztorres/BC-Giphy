@@ -15,6 +15,8 @@
         crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
     <title>Giphy API Grab</title>
 </head>
 
@@ -30,8 +32,20 @@
 
             <!-- Button triggers new animal to be added -->
             <input id="add-animal" type="submit" value="Submit">
+            <input id="reset-page" type="reset" value="Reset Page">
+
         </form>
-        <div id="gifs-show-here"></div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Div to hold gifs -->
+                <div id="gifs-show-here"></div>
+            </div>
+            <div class="col-md-4">
+                <!-- Div to hold favorites -->
+                <div class="favorites"></div>
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"

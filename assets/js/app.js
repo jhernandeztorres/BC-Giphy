@@ -22,7 +22,7 @@ function renderButtons() {
     }
 }
 
-// This function handles events where one button is clicked
+// This function handles events where a button is clicked
 $("#add-animal").on("click", function(event) {
     // event.preventDefault() prevents the form from trying to submit itself.
     // We're using a form so that the user can hit enter instead of clicking the button if they want
@@ -31,6 +31,8 @@ $("#add-animal").on("click", function(event) {
     var animal = $("#animal-input").val().trim();
     // The animal from the textbox is then added to our array
     topics.push(animal);
+
+    $("input").empty();
     // calling renderButtons which handles the processing of our movie array
     renderButtons();
 });
@@ -124,8 +126,19 @@ function animateGifs() {
     }
   };
   
-  $(document).on("click", ".animal", displayGifs);
-  $(document).on("click", ".gif", animateGifs);
-  
-  renderButtons();
+  // Function to reset page
+  $("#reset-page").on("click", function() {
+      location.reload();
+  })
+
+
+  // Function to clear textbox on focus
+  $('input:text').focus(function(){
+      $(this).val('');
+    });
+    
+    renderButtons();
+    $(document).on("click", ".animal", displayGifs);
+    $(document).on("click", ".gif", animateGifs);
+
 });
