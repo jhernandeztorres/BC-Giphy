@@ -7,6 +7,7 @@ var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 function renderButtons() {
     $("#animals-view").empty();
     // Looping through the array of topics
+    console.log("Render Topics", topics)
     for (var i = 0; i < topics.length; i++) {
         // Then dynamically generating buttons for each animal in the array.
         // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
@@ -29,19 +30,27 @@ $("#add-animal").on("click", function(event) {
     event.preventDefault();
     // This line will grab the text from the input box
     var animal = $("#animal-input").val().trim();
-    // The animal from the textbox is then added to our array
-    topics.push(animal);
-
-    $("input").empty();
-    // calling renderButtons which handles the processing of our movie array
+    
+    // calling renderButtons which handles the processing of our topics array
+    displayGifs();
     renderButtons();
+    $("#animal-input").val("");
 });
-
 
 // Function to make ajax call and append gifs to div
 function displayGifs() {
+    var animal ;
+    //[] == whale
+    if (topics.indexOf($("#animal-input").val()) === -1 && $("#animal-input").val() !== ""){
     // In this case, the "this" keyword refers to the button that was clicked
-    var animal = $(this).attr("data-name");
+     animal = $("#animal-input").val();
+     topics.push(animal);
+    } else if(topics.indexOf($("#animal-input").val()) > -1) {
+        var index = topics.indexOf($("#animal-input").val());
+        animal = topics[index]
+    } else {
+        animal = $(this).attr("data-name");
+    }
     var apiKey = "e8wC3drKNreARrNT1wSIpVLBfqS6BTcL";
     // Constructing a URL to search Giphy for the name of the person who said the quote
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -131,11 +140,6 @@ function animateGifs() {
       location.reload();
   })
 
-
-  // Function to clear textbox on focus
-  $('input:text').focus(function(){
-      $(this).val('');
-    });
     
     renderButtons();
     $(document).on("click", ".animal", displayGifs);
