@@ -1,148 +1,201 @@
 $(document).ready(function () {
-// Array of starting animals
-var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
+    // Array of starting animals
+    var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 
+    // Button Functions //
 
-// Function to display buttons
-function renderButtons() {
-    $("#animals-view").empty();
-    // Looping through the array of topics
-    console.log("Render Topics", topics)
-    for (var i = 0; i < topics.length; i++) {
-        // Then dynamically generating buttons for each animal in the array.
-        // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
-        var a = $("<button>");
-        // Adding a class
-        a.addClass("animal");
-        // Adding a data-attribute with a value of the animal at index i
-        a.attr("data-name", topics[i]);
-        // Providing the button's text with a value of the animal at index i
-        a.text(topics[i]);
-        // Adding the button to the HTML
-        $("#animals-view").append(a);
-    }
-}
-
-// This function handles events where a button is clicked
-$("#add-animal").on("click", function(event) {
-    // event.preventDefault() prevents the form from trying to submit itself.
-    // We're using a form so that the user can hit enter instead of clicking the button if they want
-    event.preventDefault();
-    // This line will grab the text from the input box
-    var animal = $("#animal-input").val().trim();
-    
-    // calling renderButtons which handles the processing of our topics array
-    displayGifs();
-    renderButtons();
-    $("#animal-input").val("");
-});
-
-// Function to make ajax call and append gifs to div
-function displayGifs() {
-    var animal ;
-    //[] == whale
-    if (topics.indexOf($("#animal-input").val()) === -1 && $("#animal-input").val() !== ""){
-    // In this case, the "this" keyword refers to the button that was clicked
-     animal = $("#animal-input").val();
-     topics.push(animal);
-    } else if(topics.indexOf($("#animal-input").val()) > -1) {
-        var index = topics.indexOf($("#animal-input").val());
-        animal = topics[index]
-    } else {
-        animal = $(this).attr("data-name");
-    }
-    var apiKey = "e8wC3drKNreARrNT1wSIpVLBfqS6BTcL";
-    // Constructing a URL to search Giphy for the name of the person who said the quote
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    animal + "&api_key=" + apiKey + "&limit=10";
-    // Performing our AJAX GET request
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    })
-    // After the data comes back from the API
-    .then(function(response) {
-        // Storing an array of results in the results variable
-        var results = response.data;
-        console.log(results);
-        // Looping over every result item
-        for (var i = 0; i < results.length; i++) {
-            
-            // Only taking action if the photo has an appropriate rating
-            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-                // Creating a div for the gif
-                var gifDiv = $("<div>").addClass("gifInfo");
-                
-                // Storing the result item's title
-                var title = results[i].title;
-                
-                // Creating a paragraph tag with the result item's title
-                var t = $("<p>").text("Title: " + title);
-
-                // Storing the result item's trending date
-                var trending = results[i].trending_datetime;
-
-                // Creating a paragraph tag with the result items trending date
-                var tr = $("<p>").text("Trending Date: " + trending);
-
-                // Creating an image tag
-                var animalImage = $("<img>");
-
-                // Storing the result item's rating
-                var rating = results[i].rating;
-                
-                // Creating a paragraph tag with the result item's rating
-                var r = $("<p>").text("Rating: " + rating);
-
-                // Creating a button for download and add to favorite
-                var dB = $("<button>").addClass("btn dload").text("Download").prepend('<i class="fas fa-download"></i>');
-                var aF = $("<button>").addClass("btn fav").text("Favorite?").prepend('<i class="far fa-star"></i>');
-                // var dGif = $("<a href=" + results[i].url);
-
-                // Giving the image tag an src attribute of a property pulled off the
-                // result item
-                animalImage.attr("src", results[i].images.fixed_height_still.url)
-                .attr("data-state", "still")
-                .attr("data-still", results[i].images.fixed_height_still.url)
-                .attr("data-animate", results[i].images.fixed_height.url)
-                .addClass("gif");
-                
-                // Appending the variables I created to the "gifDiv" div I created
-                gifDiv.append("<br>");
-                gifDiv.append(aF);
-                gifDiv.append(t);
-                gifDiv.append(animalImage);
-                gifDiv.append(tr);
-                gifDiv.append(r);
-                gifDiv.append(dB);
-                
-                // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
-                $("#gifs-show-here").prepend(gifDiv);
-            }
+    // Function to display buttons
+    function renderButtons() {
+        $("#animals-view").empty();
+        // Looping through the array of topics
+        for (var i = 0; i < topics.length; i++) {
+            // Then dynamically generating buttons for each animal in the array.
+            // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
+            var a = $("<button>");
+            // Adding a class
+            a.addClass("animal");
+            // Adding a data-attribute with a value of the animal at index i
+            a.attr("data-name", topics[i]);
+            // Providing the button's text with a value of the animal at index i
+            a.text(topics[i]);
+            // Adding the button to the HTML
+            $("#animals-view").append(a);
         }
-    });
-};
-
-// Function to start and stop animations
-function animateGifs() {
-    var state = $(this).attr("data-state");
-    if (state === "still") {
-      $(this).attr("src", $(this).attr("data-animate"));
-      $(this).attr("data-state", "animate");
-    } else {
-      $(this).attr("src", $(this).attr("data-still"));
-      $(this).attr("data-state", "still");
     }
-  };
-  
-  // Function to reset page
-  $("#reset-page").on("click", function() {
-      location.reload();
-  })
 
-    
+    // This function handles events where a button is clicked
+    $("#add-animal").on("click", function (event) {
+        event.preventDefault();
+        displayGifs();
+        renderButtons();
+        $("#animal-input").val("");
+    });
+
+    // Function to reset page
+    $("#reset-page").on("click", function () {
+        location.reload();
+    })
+
+    // Function to add new row to favorites
+    function createRow(title, url, thumbnail, rating) {
+        var tRow = $("<tr>");
+        var gifTitle = $("<td>").text(title);
+        var gifUrl = $("<td>").text(url); // link should not be clickable
+        var gifThumb = $("<td>").text(images.preview_gif.url); // thumbnail needs to be pretty small
+        var gifRating = $("<td>").text(rating);
+        // var gifLink = $("<td>").attr("").text(url); // add link in [link] so it looks like that and the link is clickable
+
+        tRow.append(gifTitle, gifUrl, gifThumb, gifRating);
+
+        $("tbody").append(tRow);
+    }
+
+    // Function to add gif information to favorites
+    function favoriteBtn() {
+        console.log("Favorite Button Pressed");
+        console.log("Text: " + $(".title").text());
+        textInfo = $("<p>").text("Gif information added to favorites!");
+        $(".favorites").append(textInfo);
+        setTimeout(function(){
+            $(".favorites").text(" ")
+        }, 5000);
+    }
+
+    function downloadBtn() {
+        console.log("Download button pressed");
+    }
+
+    // API Call Function //
+
+    // Function to make ajax call and append gifs to div
+    function displayGifs() {
+        var animal;
+        if (topics.indexOf($("#animal-input").val()) === -1 && $("#animal-input").val() !== "") {
+            animal = $("#animal-input").val();
+            topics.push(animal);
+        } else if (topics.indexOf($("#animal-input").val()) > -1) {
+            var index = topics.indexOf($("#animal-input").val());
+            animal = topics[index]
+        } else {
+            animal = $(this).attr("data-name");
+        }
+        var apiKey = "e8wC3drKNreARrNT1wSIpVLBfqS6BTcL";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+            animal + "&api_key=" + apiKey + "&limit=10";
+        $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+            .then(function (response) {
+                var results = response.data;
+                console.log(results);
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                        var gifDiv = $("<div>").addClass("gifInfo");
+                        var title = results[i].title;
+                        var t = $("<p>").text("Title: " + title).addClass("title");
+                        var trending = results[i].trending_datetime;
+                        var tr = $("<p>").text("Trending Date: " + trending).addClass("trending");
+                        var animalImage = $("<img>");
+                        var rating = results[i].rating;
+                        var r = $("<p>").text("Rating: " + rating).addClass("rating");
+                        var dB = $("<button>").attr("id", "dlBtn").addClass("btn dload").text("Download").prepend('<i class="fas fa-download"></i>');
+                        var aF = $("<button>").attr("id", "favBtn").addClass("btn fav").text("Favorite?").prepend('<i class="far fa-star"></i>');
+                        animalImage.attr("src", results[i].images.fixed_height_still.url)
+                            .attr("data-state", "still")
+                            .attr("data-still", results[i].images.fixed_height_still.url)
+                            .attr("data-animate", results[i].images.fixed_height.url)
+                            .addClass("gif");
+                        gifDiv.append("<br>");
+                        gifDiv.append(aF);
+                        gifDiv.append(t);
+                        gifDiv.append(animalImage);
+                        gifDiv.append(tr);
+                        gifDiv.append(r);
+                        gifDiv.append(dB);
+                        $("#gifs-show-here").prepend(gifDiv);
+                    }
+                }
+            });
+    };
+
+    // Animation Function //
+
+    // Function to start and stop animations
+    function animateGifs() {
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+    };
+
+    // Extras
+    // Show weather info
+    $.getJSON("https://ipinfo.io/", function (json) {
+        $(".location").html(json.city + " , " + json.region);
+        getData(json.loc);
+    });
+
+    function getData(loc) {
+        var lat = loc.split(",")[0];
+        var lon = loc.split(",")[1];
+        var apiKey = "c38f38fafa15b4cc5eb95f4dab2c7dc1";
+        var corsURL = "https://cors-anywhere.herokuapp.com/";
+        var weatherURL = corsURL + "https://api.darksky.net/forecast/" + apiKey + "/" + lat + "," + lon;
+
+        $.getJSON(weatherURL, function (data) {
+            var summary = data.currently.summary;
+            $(".summary").html(summary);
+
+            var tempF = Math.round(data.currently.temperature);
+            $(".tempF").html("Current Temperature: <br/>" + tempF + "\xB0F");
+
+            var icon = data.currently.icon;
+
+            var skycons = new Skycons({
+                "color": "blue"
+            });
+
+            function weatherIcon() {
+                if (icon === "clear-day") {
+                    skycons.add("icon1", Skycons.CLEAR_DAY);
+                } else if (icon === "clear-night") {
+                    skycons.add("icon1", Skycons.CLEAR_NIGHT);
+                } else if (icon === "rain") {
+                    skycons.add("icon1", Skycons.RAIN);
+                } else if (icon === "snow") {
+                    skycons.add("icon1", Skycons.SNOW);
+                } else if (icon === "sleet") {
+                    skycons.add("icon1", Skycons.SLEET);
+                } else if (icon === "wind") {
+                    skycons.add("icon1", Skycons.WIND);
+                } else if (icon === "fog") {
+                    skycons.add("icon1", Skycons.FOG);
+                } else if (icon === "cloudy") {
+                    skycons.add("icon1", Skycons.CLOUDY);
+                } else if (icon === "clear-night") {
+                    skycons.add("icon1", Skycons.CLEAR_NIGHT);
+                } else if (icon === "partly-cloudy-day") {
+                    skycons.add("icon1", Skycons.PARTLY_CLOUDY_DAY);
+                } else if (icon === "partly-cloudy-night") {
+                    skycons.add("icon1", Skycons.PARTLY_CLOUDY_NIGHT);
+                } else {
+                    console.log("Dark Sky icon did not return a matching case");
+                }
+                skycons.play();
+            }
+            weatherIcon();
+        })
+    }
+
     renderButtons();
-    $(document).on("click", ".animal", displayGifs);
-    $(document).on("click", ".gif", animateGifs);
+    $(document).on("click", ".animal", displayGifs); // Click function to allow new buttons to be used
+    $(document).on("click", ".gif", animateGifs); // Click function to allow gifs to change state from still to animated
+    $(document).on("click", ".fav", favoriteBtn)
+    $(document).on("click", ".dload", downloadBtn)
 
 });

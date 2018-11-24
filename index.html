@@ -15,46 +15,103 @@
         crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- SkyCons CDN -->
+    <script rel="text/javascript" src="https://rawgit.com/darkskyapp/skycons/master/skycons.js"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
     <title>Giphy API Grab</title>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Animal Gif Search</h1>
-
-        <div id="animals-view"></div>
-
-        <form id="animal-form">
-            <label for="animal-input">Animal Name Here --></label>
-            <input type="text" id="animal-input"><br>
-
-            <!-- Button triggers new animal to be added -->
-            <input id="add-animal" type="submit" value="Submit">
-            <input id="reset-page" type="reset" value="Reset Page">
-            <input id="favs" type="submit" value="Favorites">
-
-        </form>
-
+    <!-- Modal -->
+    <div class="modal fade" id="favorites" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Favorite Gifs Saved</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Gif Title</th>
+                                <th scope="col">GIf URL</th>
+                                <th scope="col">Thumbnail</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Link</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
+                <h1>Animal Gif Search</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="rightBox">
+                    <div class="leftCol">
+                        <p class="location"></p>
+                        <p class="icon"></p>
+                        <canvas id="icon1" width="100" height="100"></canvas>
+                        <p class="summary"></p>
+                    </div>
+
+                    <div class="rightCol">
+                        <p class="tempF"></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="animals-view"></div>
+            </div>
+            <div class="col-md-6">
+                <form id="animal-form">
+                    <label for="animal-input">Animal Name Here --></label>
+                    <input type="text" id="animal-input"><br>
+
+                    <!-- Button triggers new animal to be added -->
+                    <input id="add-animal" type="submit" value="Add Word to List">
+                    <input id="reset-page" type="reset" value="Reset Page">
+
+                    <!-- Button trigger modal -->
+                    <input type="button" data-toggle="modal" data-target="#favorites" value="Favorites">
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <!-- Div to hold gifs -->
                 <div id="gifs-show-here"></div>
             </div>
-            <div class="col-md-4">
+            <div class="col text-center">
                 <!-- Div to hold favorites -->
                 <div class="favorites"></div>
             </div>
         </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="./assets/js/app.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+
+        <script type="text/javascript" src="./assets/js/app.js"></script>
 </body>
 
 </html>

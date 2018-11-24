@@ -18,6 +18,7 @@ button {
 }
 
 form {
+    padding: 20px 0 0;
     float: right;
 }
 
@@ -25,9 +26,19 @@ h1, .animal, button, input, label {
     font-family: 'Abril Fatface', cursive;
 }
 
+.favorites {
+    padding: 10px 10px;
+}
+
 label {
     border: 1px solid black;
     padding: 2px 5px;
+}
+
+p {
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+    font-size: 2em;
 }
 
 .favorites {
