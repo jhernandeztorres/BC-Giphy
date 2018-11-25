@@ -2,6 +2,10 @@ $(document).ready(function () {
     // Array of starting animals
     var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 
+    var favoritesArr = [];
+
+    var gifCounter = 0;
+
     // Button Functions //
 
     // Function to display buttons
@@ -40,33 +44,47 @@ $(document).ready(function () {
     function createRow(title, url, thumbnail, rating) {
         var tRow = $("<tr>");
         var gifTitle = $("<td>").text(title);
-        var gifUrl = $("<td>").text(url); // link should not be clickable
-        var gifThumb = $("<td>").text(thumbnail); // thumbnail needs to be pretty small
+        var gifUrl = $("<td>").text(url);
+        var gifThumb = $("<img>");
+        gifThumb.attr("src", thumbnail).attr("class", "preview");
         var gifRating = $("<td>").text(rating);
-        // var gifLink = $("<td>").attr("").text(url); // add link in [link] so it looks like that and the link is clickable
-
-        tRow.append(gifTitle, gifUrl, gifThumb, gifRating);
-
+        var gifLink = $("<a>");
+        gifLink.html("[Link]");
+        gifLink.attr("href", url);
+        tRow.append(gifTitle, gifUrl, gifThumb, gifRating, gifLink);
         $("tbody").append(tRow);
     }
 
     // Function to add gif information to favorites
     function favoriteBtn() {
-        console.log("Favorite Button Pressed");
-        console.log("Thumbnail Href: " + $(this).attr("thumbnail-href"));
-        console.log("Title: " + $(this).attr("title"));
-        console.log("Rating: " + $(this).attr("rating"));
-        console.log("Gif Href: " + $(this).attr("animated-href"));
         var title = $(this).attr("title");
         var url = $(this).attr("animated-href");
         var thumbnail = $(this).attr("thumbnail-href");
         var rating = $(this).attr("rating");
-        createRow(title, url, thumbnail, rating);
-        textInfo = $("<p>").text("Gif information added to favorites!");
-        $(".favorites").append(textInfo);
-        setTimeout(function(){
-            $(".favorites").text(" ")
-        }, 5000);
+        if (favoritesArr.indexOf(title) === -1 && gifCounter < 10) {
+            favoritesArr.push(title);
+            createRow(title, url, thumbnail, rating);
+            var textInfo = $("<p>").text("Gif added to favorites!");
+            $(".favorites").append(textInfo);
+            setTimeout(function () {
+                $(".favorites").text(" ")
+            }, 5000);
+            gifCounter++;
+            console.log(gifCounter);
+        } else if (favoritesArr.indexOf(title) > -1 && gifCounter < 10) {
+            var textInfo = $("<p>").text("Gif already in favorites.");
+            $(".favorites").append(textInfo);
+            setTimeout(function () {
+                $(".favorites").text(" ")
+            }, 5000);
+        } else if (gifCounter === 10) {
+            var textInfo = $("<p>").text("Favorites limit reached.");
+            $(".favorites").append(textInfo);
+            setTimeout(function () {
+                $(".favorites").text(" ")
+            }, 5000);
+        }
+
     }
 
     function downloadBtn() {
@@ -108,14 +126,14 @@ $(document).ready(function () {
                         var rating = results[i].rating;
                         var r = $("<p>").text("Rating: " + rating).addClass("rating");
                         var dB = $("<a>").attr("id", "dlBtn").attr("download", " ")
-                        .addClass("btn dload")
-                        .html("<button><i class='fas fa-download'>Download</i></button>")
+                            .addClass("btn dload")
+                            .html("<button><i class='fas fa-download'>Download</i></button>")
                         dB.attr("href", results[i].images.fixed_height.url);
                         $("<a>").html("<button>")
                         var aF = $("<button>").attr("id", "favBtn")
-                        .addClass("btn fav")
-                        .text("Favorite?")
-                        .prepend('<i class="far fa-star"></i>');
+                            .addClass("btn fav")
+                            .text("Favorite?")
+                            .prepend('<i class="far fa-star"></i>');
                         aF.attr("thumbnail-href", results[i].images.preview_gif.url)
                         aF.attr("animated-href", results[i].images.fixed_height.url)
                         aF.attr("title", results[i].title);

@@ -10,6 +10,14 @@ body {
 
 }
 
+.modal-lg {
+    max-width: 80%;
+}
+
+.preview {
+    height: 90px;
+    width: 160px;
+}
 
 button {
     background-color: forestgreen;
