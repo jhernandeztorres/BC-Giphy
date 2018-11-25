@@ -41,7 +41,7 @@ $(document).ready(function () {
         var tRow = $("<tr>");
         var gifTitle = $("<td>").text(title);
         var gifUrl = $("<td>").text(url); // link should not be clickable
-        var gifThumb = $("<td>").text(images.preview_gif.url); // thumbnail needs to be pretty small
+        var gifThumb = $("<td>").text(thumbnail); // thumbnail needs to be pretty small
         var gifRating = $("<td>").text(rating);
         // var gifLink = $("<td>").attr("").text(url); // add link in [link] so it looks like that and the link is clickable
 
@@ -53,7 +53,15 @@ $(document).ready(function () {
     // Function to add gif information to favorites
     function favoriteBtn() {
         console.log("Favorite Button Pressed");
-        console.log("Text: " + $(".title").text());
+        console.log("Thumbnail Href: " + $(this).attr("thumbnail-href"));
+        console.log("Title: " + $(this).attr("title"));
+        console.log("Rating: " + $(this).attr("rating"));
+        console.log("Gif Href: " + $(this).attr("animated-href"));
+        var title = $(this).attr("title");
+        var url = $(this).attr("animated-href");
+        var thumbnail = $(this).attr("thumbnail-href");
+        var rating = $(this).attr("rating");
+        createRow(title, url, thumbnail, rating);
         textInfo = $("<p>").text("Gif information added to favorites!");
         $(".favorites").append(textInfo);
         setTimeout(function(){
@@ -99,8 +107,19 @@ $(document).ready(function () {
                         var animalImage = $("<img>");
                         var rating = results[i].rating;
                         var r = $("<p>").text("Rating: " + rating).addClass("rating");
-                        var dB = $("<button>").attr("id", "dlBtn").addClass("btn dload").text("Download").prepend('<i class="fas fa-download"></i>');
-                        var aF = $("<button>").attr("id", "favBtn").addClass("btn fav").text("Favorite?").prepend('<i class="far fa-star"></i>');
+                        var dB = $("<a>").attr("id", "dlBtn").attr("download", " ")
+                        .addClass("btn dload")
+                        .html("<button><i class='fas fa-download'>Download</i></button>")
+                        dB.attr("href", results[i].images.fixed_height.url);
+                        $("<a>").html("<button>")
+                        var aF = $("<button>").attr("id", "favBtn")
+                        .addClass("btn fav")
+                        .text("Favorite?")
+                        .prepend('<i class="far fa-star"></i>');
+                        aF.attr("thumbnail-href", results[i].images.preview_gif.url)
+                        aF.attr("animated-href", results[i].images.fixed_height.url)
+                        aF.attr("title", results[i].title);
+                        aF.attr("rating", results[i].rating)
                         animalImage.attr("src", results[i].images.fixed_height_still.url)
                             .attr("data-state", "still")
                             .attr("data-still", results[i].images.fixed_height_still.url)
