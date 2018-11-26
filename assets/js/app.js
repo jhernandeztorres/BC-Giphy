@@ -53,6 +53,7 @@ $(document).ready(function () {
         gifLink.attr("href", url).attr('target', '_blank').addClass("external");
         tRow.append(gifTitle, gifUrl, gifThumb, gifRating, gifLink);
         $("tbody").append(tRow);
+        localStore(gifTitle, gifUrl, gifThumb, gifRating)
     }
 
     // Function to add gif information to favorites
@@ -70,7 +71,7 @@ $(document).ready(function () {
                 $(".favorites").text(" ")
             }, 5000);
             gifCounter++;
-            console.log(gifCounter);
+            // localStore(title, url, thumbnail, rating);
         } else if (favoritesArr.indexOf(title) > -1 && gifCounter < 10) {
             var textInfo = $("<p>").text("Gif already in favorites.");
             $(".favorites").append(textInfo);
@@ -168,6 +169,17 @@ $(document).ready(function () {
     };
 
     // Extras
+
+    // Function for localstorage
+    function localStore(title, url, thumbnail, rating){
+        event.preventDefault();
+        localStorage.setItem("title", title);
+        localStorage.setItem("url", url);
+        localStorage.setItem("thumbnail", thumbnail);
+        localStorage.setItem("rating", rating);
+    }
+
+
     // Show weather info
     $.getJSON("https://ipinfo.io/", function (json) {
         $(".location").html(json.city + " , " + json.region);
@@ -231,5 +243,9 @@ $(document).ready(function () {
     $(document).on("click", ".gif", animateGifs); // Click function to allow gifs to change state from still to animated
     $(document).on("click", ".fav", favoriteBtn)
     $(document).on("click", ".dload", downloadBtn)
+    $("#favorites").text(localStorage.getItem("title"));
+    $("#favorites").text(localStorage.getItem("url"));
+    $("#favorites").text(localStorage.getItem("thumbnail"));
+    $("#favorites").text(localStorage.getItem("rating"));
 
 });
