@@ -50,7 +50,7 @@ $(document).ready(function () {
         var gifRating = $("<td>").text(rating);
         var gifLink = $("<a>");
         gifLink.html("[Link]");
-        gifLink.attr("href", url);
+        gifLink.attr("href", url).attr('target', '_blank').addClass("external");
         tRow.append(gifTitle, gifUrl, gifThumb, gifRating, gifLink);
         $("tbody").append(tRow);
     }
@@ -120,8 +120,6 @@ $(document).ready(function () {
                         var gifDiv = $("<div>").addClass("gifInfo");
                         var title = results[i].title;
                         var t = $("<p>").text("Title: " + title).addClass("title");
-                        var trending = results[i].trending_datetime;
-                        var tr = $("<p>").text("Trending Date: " + trending).addClass("trending");
                         var animalImage = $("<img>");
                         var rating = results[i].rating;
                         var r = $("<p>").text("Rating: " + rating).addClass("rating");
@@ -147,7 +145,6 @@ $(document).ready(function () {
                         gifDiv.append(aF);
                         gifDiv.append(t);
                         gifDiv.append(animalImage);
-                        gifDiv.append(tr);
                         gifDiv.append(r);
                         gifDiv.append(dB);
                         $("#gifs-show-here").prepend(gifDiv);
