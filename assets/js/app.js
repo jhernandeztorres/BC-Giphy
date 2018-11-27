@@ -1,8 +1,15 @@
 $(document).ready(function () {
+    var favoritesArr = [];
+
+    if (localStorage.getItem("storeInfo") !== null){
+        favoritesArr = JSON.parse(localStorage.getItem("storeInfo"))
+        for (var i = 0; i < favoritesArr.length; i++) {
+               createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
+        }
+    }
     // Array of starting animals
     var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 
-    var favoritesArr = [];
 
     var gifCounter = 0;
 
@@ -37,6 +44,7 @@ $(document).ready(function () {
 
     // Function to reset page
     $("#reset-page").on("click", function () {
+        localStorage.clear();
         location.reload();
     })
 
@@ -53,7 +61,6 @@ $(document).ready(function () {
         gifLink.attr("href", url).attr('target', '_blank').addClass("external");
         tRow.append(gifTitle, gifUrl, gifThumb, gifRating, gifLink);
         $("tbody").append(tRow);
-        localStore(gifTitle, gifUrl, gifThumb, gifRating)
     }
 
     // Function to add gif information to favorites
@@ -62,22 +69,76 @@ $(document).ready(function () {
         var url = $(this).attr("animated-href");
         var thumbnail = $(this).attr("thumbnail-href");
         var rating = $(this).attr("rating");
-        if (favoritesArr.indexOf(title) === -1 && gifCounter < 10) {
-            favoritesArr.push(title);
-            createRow(title, url, thumbnail, rating);
+        var isThere = false;
+        //write some variable to keep track of which
+        // conditional it should go into
+
+        // write forloop to go through the favArr and return a number 
+        // depending on the output. And set that to the variable
+        // and that variable will replace all previous conditionals
+
+        /**
+         * for(...) {
+         *  // isThere = true 
+         *  // else isThere = false
+         * }
+         */
+        for (var i = 0; i < favoritesArr.length; i++) {
+
+            // search through favArr to see if url exist;
+            // [{url:"something"},{url:"something"},{url:"something"}]
+            if (favoritesArr[i].url == url) {
+                isThere = true;
+            }
+        }
+
+        // console.log("Is there", isThere)
+        if (isThere === false && gifCounter < 10) {
+            console.log(title, url, thumbnail);
+            // Push object {} into favArr;
+            var gifInfo = {
+                title,
+                url,
+                thumbnail,
+                rating
+            }
+            favoritesArr.push(gifInfo);
+            $("tbody").empty();
+            for (var i = 0; i < favoritesArr.length; i++) {
+
+                createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
+            }
             var textInfo = $("<p>").text("Gif added to favorites!");
             $(".favorites").append(textInfo);
             setTimeout(function () {
                 $(".favorites").text(" ")
             }, 5000);
             gifCounter++;
-            // localStore(title, url, thumbnail, rating);
-        } else if (favoritesArr.indexOf(title) > -1 && gifCounter < 10) {
-            var textInfo = $("<p>").text("Gif already in favorites.");
+            localStore(title, url, thumbnail, rating);
+            console.log(favoritesArr);
+        } else if (isThere === true && gifCounter < 10) {
+            var textInfo = $("<p>").text("Gif removed from favorites.");
             $(".favorites").append(textInfo);
+
+            // Use for loop to find unique specifier and splice() out
+            // from the favArr
+            for (var i = 0; i < favoritesArr.length; i++) {
+
+                if (favoritesArr[i].url === url) {
+                    favoritesArr.splice(i, 1);
+
+                }
+            }
+
+            $("tbody").empty();
+            for (var i = 0; i < favoritesArr.length; i++) {
+
+                createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
+            }
             setTimeout(function () {
                 $(".favorites").text(" ")
             }, 5000);
+            console.log(favoritesArr);
         } else if (gifCounter === 10) {
             var textInfo = $("<p>").text("Favorites limit reached.");
             $(".favorites").append(textInfo);
@@ -124,7 +185,7 @@ $(document).ready(function () {
                         var animalImage = $("<img>");
                         var rating = results[i].rating;
                         var r = $("<p>").text("Rating: " + rating).addClass("rating");
-                        var dB = $("<a>").attr("id", "dlBtn").attr("download", " ")
+                        var dB = $("<a>").attr("id", "dlBtn").attr("download", "")
                             .addClass("btn dload")
                             .html("<button><i class='fas fa-download'>Download</i></button>")
                         dB.attr("href", results[i].images.fixed_height.url);
@@ -137,6 +198,7 @@ $(document).ready(function () {
                         aF.attr("animated-href", results[i].images.fixed_height.url)
                         aF.attr("title", results[i].title);
                         aF.attr("rating", results[i].rating)
+                        aF.attr("data-fave", "unfavored");
                         animalImage.attr("src", results[i].images.fixed_height_still.url)
                             .attr("data-state", "still")
                             .attr("data-still", results[i].images.fixed_height_still.url)
@@ -168,15 +230,29 @@ $(document).ready(function () {
         }
     };
 
+    // Function to change star on favorite button
+    function changeStar() {
+        var state = $(this).attr("data-fave");
+        if (state === "unfavored") {
+            $(this).html("<i class='fas fa-star'></i>")
+            $(this).attr("data-fave", "favorite");
+        } else {
+            $(this).text("Favorite?").prepend("<i class='far fa-star'></i>");
+            $(this).attr("data-fave", "unfavored");
+        }
+    }
+
+
     // Extras
 
     // Function for localstorage
-    function localStore(title, url, thumbnail, rating){
-        event.preventDefault();
-        localStorage.setItem("title", title);
-        localStorage.setItem("url", url);
-        localStorage.setItem("thumbnail", thumbnail);
-        localStorage.setItem("rating", rating);
+    function localStore(title, url, thumbnail, rating) {
+        // localStorage.setItem("title", title);
+        // localStorage.setItem("url", url);
+        // localStorage.setItem("thumbnail", thumbnail);
+        // localStorage.setItem("rating", rating);
+
+        localStorage.setItem("storeInfo", JSON.stringify(favoritesArr));
     }
 
 
@@ -243,9 +319,11 @@ $(document).ready(function () {
     $(document).on("click", ".gif", animateGifs); // Click function to allow gifs to change state from still to animated
     $(document).on("click", ".fav", favoriteBtn)
     $(document).on("click", ".dload", downloadBtn)
-    $("#favorites").text(localStorage.getItem("title"));
-    $("#favorites").text(localStorage.getItem("url"));
-    $("#favorites").text(localStorage.getItem("thumbnail"));
-    $("#favorites").text(localStorage.getItem("rating"));
+    $(document).on("click", ".fav", changeStar)
+    // $("#favorites").text(localStorage.getItem("title"));
+    // console.log(localStorage.getItem("title"));
+    // $("#favorites").text(localStorage.getItem("url"));
+    // $("#favorites").text(localStorage.getItem("thumbnail"));
+    // $("#favorites").text(localStorage.getItem("rating"));
 
 });

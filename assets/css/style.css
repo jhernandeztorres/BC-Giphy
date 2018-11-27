@@ -34,8 +34,8 @@ h1, .animal, button, input, label {
     font-family: 'Abril Fatface', cursive;
 }
 
-.favorites {
-    padding: 10px 10px;
+.fas.fa-star {
+    color: yellow;
 }
 
 label {
@@ -51,4 +51,5 @@ p {
 
 .favorites {
     float: right;
+    padding: 10px 10px;
 }
