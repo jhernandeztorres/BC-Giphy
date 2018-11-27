@@ -1,16 +1,17 @@
 $(document).ready(function () {
     var favoritesArr = [];
 
-    if (localStorage.getItem("storeInfo") !== null){
+    // Get info from localStorage and create new row(s) for favorites
+    if (localStorage.getItem("storeInfo") !== null) {
         favoritesArr = JSON.parse(localStorage.getItem("storeInfo"))
         for (var i = 0; i < favoritesArr.length; i++) {
-               createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
+            createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
         }
     }
     // Array of starting animals
     var topics = ["dog", "cat", "bird", "lizard", "dragon", "snake"];
 
-
+    // Counter to control how many gifs can be added to favorites
     var gifCounter = 0;
 
     // Button Functions //
@@ -70,32 +71,15 @@ $(document).ready(function () {
         var thumbnail = $(this).attr("thumbnail-href");
         var rating = $(this).attr("rating");
         var isThere = false;
-        //write some variable to keep track of which
-        // conditional it should go into
 
-        // write forloop to go through the favArr and return a number 
-        // depending on the output. And set that to the variable
-        // and that variable will replace all previous conditionals
-
-        /**
-         * for(...) {
-         *  // isThere = true 
-         *  // else isThere = false
-         * }
-         */
         for (var i = 0; i < favoritesArr.length; i++) {
-
-            // search through favArr to see if url exist;
-            // [{url:"something"},{url:"something"},{url:"something"}]
             if (favoritesArr[i].url == url) {
                 isThere = true;
             }
         }
 
-        // console.log("Is there", isThere)
         if (isThere === false && gifCounter < 10) {
             console.log(title, url, thumbnail);
-            // Push object {} into favArr;
             var gifInfo = {
                 title,
                 url,
@@ -105,7 +89,6 @@ $(document).ready(function () {
             favoritesArr.push(gifInfo);
             $("tbody").empty();
             for (var i = 0; i < favoritesArr.length; i++) {
-
                 createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
             }
             var textInfo = $("<p>").text("Gif added to favorites!");
@@ -120,19 +103,14 @@ $(document).ready(function () {
             var textInfo = $("<p>").text("Gif removed from favorites.");
             $(".favorites").append(textInfo);
 
-            // Use for loop to find unique specifier and splice() out
-            // from the favArr
             for (var i = 0; i < favoritesArr.length; i++) {
-
                 if (favoritesArr[i].url === url) {
                     favoritesArr.splice(i, 1);
-
                 }
             }
 
             $("tbody").empty();
             for (var i = 0; i < favoritesArr.length; i++) {
-
                 createRow(favoritesArr[i].title, favoritesArr[i].url, favoritesArr[i].thumbnail, favoritesArr[i].rating);
             }
             setTimeout(function () {
@@ -247,11 +225,6 @@ $(document).ready(function () {
 
     // Function for localstorage
     function localStore(title, url, thumbnail, rating) {
-        // localStorage.setItem("title", title);
-        // localStorage.setItem("url", url);
-        // localStorage.setItem("thumbnail", thumbnail);
-        // localStorage.setItem("rating", rating);
-
         localStorage.setItem("storeInfo", JSON.stringify(favoritesArr));
     }
 
@@ -320,10 +293,5 @@ $(document).ready(function () {
     $(document).on("click", ".fav", favoriteBtn)
     $(document).on("click", ".dload", downloadBtn)
     $(document).on("click", ".fav", changeStar)
-    // $("#favorites").text(localStorage.getItem("title"));
-    // console.log(localStorage.getItem("title"));
-    // $("#favorites").text(localStorage.getItem("url"));
-    // $("#favorites").text(localStorage.getItem("thumbnail"));
-    // $("#favorites").text(localStorage.getItem("rating"));
 
 });
