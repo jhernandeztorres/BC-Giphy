@@ -22,12 +22,16 @@ body {
 button {
     background-color: forestgreen;
     padding: 0 10px;
-    margin: 0 5px;
+    margin: 5px 5px;
 }
 
 form {
     padding: 20px 0 0;
     float: right;
+}
+
+.input-line {
+    background-color: black;
 }
 
 h1, .animal, button, input, label {

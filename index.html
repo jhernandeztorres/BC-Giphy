@@ -57,48 +57,37 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col text-center">
                 <h1>Animal Gif Search</h1>
-            </div>
-            <div class="col-md-6">
-                <div class="rightBox">
-                    <div class="leftCol">
-                        <p class="location"></p>
-                        <p class="icon"></p>
-                        <canvas id="icon1" width="100" height="100"></canvas>
-                        <p class="summary"></p>
-                    </div>
-
-                    <div class="rightCol">
-                        <p class="tempF"></p>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col">
+                <p class="location"></p>
+                <p class="icon"></p>
+                <canvas id="icon1" width="100" height="100"></canvas>
+            </div>
+            <div class="rightCol">
+                <p class="summary"></p>
+                <p class="tempF"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div id="animals-view"></div>
             </div>
         </div>
-            <div class="row">
-                <div class="col text-center">
-                    <!-- Div to hold favorites -->
-                    <div class="favorites"></div>
-                </div>
-            <div class="col-md-4">
-                <form id="animal-form">
-                    <label for="animal-input">Animal Name Here --></label>
-                    <input type="text" id="animal-input"><br>
-
-                    <!-- Button triggers new animal to be added -->
-                    <input id="add-animal" type="submit" value="Add Word to List">
-                    <input id="reset-page" type="reset" value="Reset Page">
-
-                    <!-- Button trigger modal -->
-                    <input type="button" data-toggle="modal" data-target="#favorites" value="Favorites">
-
-                </form>
-            </div>
+        <div class="row justify-content-center input-line">
+            <form id="animal-form">
+                <input type="text" id="animal-input" placeholder="Type animal name here..."><br>
+                <!-- Button triggers new animal to be added -->
+                <input id="add-animal" type="submit" value="Add Word to List" hidden>
+                <!-- Button to reset page and clear localStorage -->
+                <input id="reset-page" type="reset" value="Reset Page">
+                <!-- Button trigger modal -->
+                <input type="button" data-toggle="modal" data-target="#favorites" value="Favorites">
+            </form>
+            <!-- </div> -->
         </div>
         <div class="row">
             <div class="col">
@@ -106,13 +95,8 @@
                 <div id="gifs-show-here"></div>
             </div>
         </div>
-
-        
-        
-        <script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
